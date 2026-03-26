@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { GALLERY_IMAGES } from '../constants';
+import { GALLERY_IMAGES as STATIC_IMAGES } from '../constants';
+import { GalleryImage } from '../types';
 
 export const Gallery = () => {
+  const [dynamicImages, setDynamicImages] = useState<GalleryImage[]>([]);
   const [filter, setFilter] = useState('All');
-  const categories = ['All', ...new Set(GALLERY_IMAGES.map(img => img.category))];
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const response = await fetch('/api/gallery');
+        if (response.ok) {
+          const data = await response.json();
+          setDynamicImages(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch dynamic gallery:', error);
+      }
+    };
+    fetchGallery();
+  }, []);
+
+  const allImages = [...STATIC_IMAGES, ...dynamicImages];
+  const categories = ['All', ...new Set(allImages.map(img => img.category))];
 
   const filteredImages = filter === 'All' 
-    ? GALLERY_IMAGES 
-    : GALLERY_IMAGES.filter(img => img.category === filter);
+    ? allImages 
+    : allImages.filter(img => img.category === filter);
 
   return (
     <div className="pt-32 pb-24 px-6 bg-stone-white min-h-screen">

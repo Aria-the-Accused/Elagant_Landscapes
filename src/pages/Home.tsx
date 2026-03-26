@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { SERVICES, GALLERY_IMAGES } from '../constants';
+import { SERVICES, GALLERY_IMAGES as STATIC_IMAGES } from '../constants';
 import { ArrowRight, Star } from 'lucide-react';
+import { GalleryImage } from '../types';
 
 export const Home = () => {
+  const [featuredImages, setFeaturedImages] = useState<GalleryImage[]>(STATIC_IMAGES.slice(0, 3));
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const response = await fetch('/api/gallery');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.length > 0) {
+            // Combine and take the latest 3
+            const combined = [...data, ...STATIC_IMAGES].slice(0, 3);
+            setFeaturedImages(combined);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch dynamic gallery:', error);
+      }
+    };
+    fetchGallery();
+  }, []);
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -103,7 +124,7 @@ export const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {GALLERY_IMAGES.slice(0, 3).map((img, index) => (
+            {featuredImages.map((img, index) => (
               <motion.div 
                 key={index}
                 initial={{ opacity: 0, scale: 0.95 }}

@@ -121,10 +121,11 @@ export const Quote = () => {
                 <select 
                   id="wa-service" 
                   required 
+                  defaultValue=""
                   onChange={handleInputChange}
                   className="w-full px-4 py-4 bg-stone-white border-none rounded-sm focus:ring-2 focus:ring-accent transition-all outline-none text-gray-500"
                 >
-                  <option value="" disabled selected>Select Primary Service Needed...</option>
+                  <option value="" disabled>Select Primary Service Needed...</option>
                   <option value="General Landscaping">General Landscaping & Maintenance</option>
                   <option value="Paving, Patios & Driveways">Paving, Patios & Driveways</option>
                   <option value="Garden Design & Planting">Garden Design & Planting</option>
