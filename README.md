@@ -49,8 +49,11 @@ To add new images to your gallery without editing code:
 
 ## Deployment Options
 
-### GitHub Pages
-You can deploy the static version of this site to GitHub Pages. Note that the "Dynamic Folder" feature requires a running server, so on GitHub Pages, you must manually update the `src/constants.ts` file or rebuild the project if using `import.meta.glob`.
+### GitHub Pages (Automated)
+I have added a GitHub Action to your project. To use it:
+1. Go to your GitHub repository **Settings > Pages**.
+2. Under **Build and deployment > Source**, select **GitHub Actions**.
+3. Every time you push to the `main` branch, your site will automatically build and deploy to `https://chasechancechange.github.io/Elagant_Landscapes/`.
 
 ### Home Server / Google Business
 For a truly professional and "always-on" experience:
